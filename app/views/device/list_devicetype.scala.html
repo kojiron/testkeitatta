@@ -1,0 +1,122 @@
+@* list_devicetype Template File *@
+@import dao.Tables.DevicetypeRow
+@(deviceTypes: Seq[DevicetypeRow])
+@template("デバイス種別一覧",1) {
+	<div class="box">
+	  <div class="box-body">
+	    <button class="btn btn-primary" data-toggle="modal" data-target="#inputForm">新規登録</button>
+	  </div>
+	</div>
+	<div class="box">
+	  <div class="box-body">
+	    <table id="columns" class="table table-bordered table-hover">
+
+
+            <form name="chbox">
+	    <thead>
+	      <tr>
+                <th></th>
+	        <th class="bg-grey text-center">Id</th>
+	        <th class="text-center">名称</th>
+	      </tr>
+	    </thead>
+	    <tbody id="elements_body">
+	    @for(element <- deviceTypes) {
+	      <tr>
+                <td><input type="checkbox" name="recodes" value=@element.id id="removeId"></td>
+	        <td class="text-center">@element.id</td>
+	        <td>@element.name</td>
+	      </tr>
+	    }
+	    </tbody>
+            </form>
+
+
+	    </table>
+            <p id="btns">
+<!--              <input type="submit" value="チェックしたデバイスを削除" />   -->
+              <button type="button" class="btn btn-primary" id="btn-remove">チェックしたデバイスを削除</button>
+            </p>
+	  </div>
+	</div>  
+	<div class="modal fade" id="inputForm" role="dialog" tabindex="-1">
+	  <div class="modal-dialog modal-dialog-center">
+  	    <div class="modal-content">
+  	      <div class="modal-header">新規登録</div>
+  	      <div class="modal-body">
+  	      ID:<input type="text" id="deviceTypeId">
+	      名前：<input type="text" id="deviceTypeName">
+	      </div>
+          <div class="modal-footer">
+      　　   <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+	        <button type="button" class="btn btn-primary" id="btn-create">登録</button>
+	   　　</div>
+	    </div>
+	  </div>
+	</div>
+	<script>
+      $('#btn-create').click(function() {
+          var deviceType = {};
+          deviceType.name = $('#deviceTypeName').val();
+          deviceType.id = parseInt($('#deviceTypeId').val());
+          $.ajax({
+            type: 'POST' ,
+            url: '/devicetype/create' ,
+            contentType: 'application/JSON' , 
+            data: JSON.stringify(deviceType) ,
+            success: function(msg) {
+                location.reload();
+            } ,
+            error: function(msg) {
+              //TODO: エラー処理
+              alert("Error...");
+            }
+          }); 
+      })
+
+
+      $('#btn-remove').click(function() {
+
+        var ids = [];
+
+        $('[name="recodes"]:checked').each(function(){
+          ids.push($(this).val());
+        });
+
+//        document.write(ids[1]);
+
+        if(window.confirm('削除しますか？')){
+
+          var len = parseInt($("[name=recodes]:checked").length);
+
+          for(var i = 0; len > i; i++){ 
+
+          var deviceType = {};
+
+//          deviceType.id = parseInt($("[name=recodes]:checked").val());
+          deviceType.id = parseInt(ids[i]);
+
+
+//          deviceType.id = ids;
+  
+//          deviceType.id = 22;
+//            deviceType.name = "test3";
+
+          $.ajax({
+            type: 'POST' ,
+            url: '/devicetype/remove' ,
+            contentType: 'application/JSON' , 
+            data: JSON.stringify(deviceType) ,
+            success: function(msg) {
+                location.reload();
+            } ,
+            error: function(xhr, textStatus, errorThrown){
+                alert('Error! ' + textStatus + ' ' + errorThrown);
+            }
+          }); 
+
+        }
+        }
+      })
+	</script>
+}

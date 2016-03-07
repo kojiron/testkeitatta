@@ -1,0 +1,60 @@
+@* index Template File *@
+<html>
+<head>
+  <title>Input Regist</title>
+  <script src="https://code.jquery.com/jquery-2.2.0.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(function() {
+
+  $('#send').click(function() {
+	  var pinNumber = $('#pinNumber').val();
+	  if (pinNumber == "") {
+		  var data = {};
+		  data.name = $('#userName').val();
+		  data.mobileNumber = $('#telNumber').val();
+		  $.ajax({
+			type:"POST",
+			url:"/owner/send_sms/" + $('#telNumber').val()  ,
+            contentType: 'application/JSON' , 
+			data: JSON.stringify(data) ,
+			success:function(msg) {
+				alert(msg.pin);
+				$('#pinInput').show();
+				$('#telNumber').attr('readonly' , true);
+			} ,
+			error:function(msg) {
+				alert("Error" + JSON.stringify(msg));
+			}
+		  });
+	  } else {
+		  $.ajax({
+			type:"POST",
+			url:"/owner/validate/" + $('#telNumber').val() + "/" + $('#pinNumber').val() ,
+			success:function(msg) {
+				alert("Ok");
+			} ,
+			error:function(msg) {
+				alert("Error");
+			}
+		  });
+	  }
+  });
+
+  $(document).ready(function() {
+	$('#pinInput').hide();
+  });
+})
+
+</script>
+</head>
+<body>
+<form>
+名前：<input type="text" name="name" id="userName">
+電話番号:<input type="text" name="telNumber" id="telNumber">
+<div id="pinInput">
+PIN番号:<input type="text" name="pinNumber" id="pinNumber">
+</div>
+<button type="button" id="send">送信</button>
+</form>
+</body>
+</html>

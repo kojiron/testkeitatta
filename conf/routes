@@ -1,0 +1,19 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+#GET		/test						controllers.IOTServer.index
+POST	/getOpenNumber				controllers.KeyboxServer.getOpenNumber
+POST	/sms_submit_result			controllers.KeyboxServer.smsSubmitResult
+GET		/							controllers.IndexController.index
+GET		/devicetype/list			controllers.DevicetypeController.list
+POST	/devicetype/create			controllers.DevicetypeController.create
+POST	/devicetype/remove			controllers.DevicetypeController.remove
+GET		/device/list				controllers.DeviceController.list
+GET		/owner/regist_index			controllers.OwnerController.regist
+POST	/owner/send_sms/:phone		controllers.OwnerController.sendSms(phone:String)
+POST	/owner/validate/:phone/:pin	controllers.OwnerController.validate(phone:String , pin:String)
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
