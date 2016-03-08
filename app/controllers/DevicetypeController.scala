@@ -48,8 +48,9 @@ class DevicetypeController @Inject()(val deviceService: DeviceService) extends C
 //      val id = (j \ "id").asOpt[Int]
       (id) match {
         case (Some(i)) => {
-          deviceService.removeDeviceType(i).map{ id => 
+          deviceService.removeDeviceType(i).map{ id =>
             Ok(Json.obj())
+ 
           }
         }
         case _ => Future(BadRequest(Json.obj()))
