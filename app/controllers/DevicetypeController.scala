@@ -42,7 +42,10 @@ class DevicetypeController @Inject()(val deviceService: DeviceService) extends C
 //      val deviceType = (j \ "name").asOpt[String]
 //      val deviceType = (j \ "id").asOpt[String]
 //      val deviceType = ("test").asOpt[String]
-      val id = (j \ "id").asOpt[Int]
+
+      //javascript array no mama toridasitai
+      val id = (j \ "id").asOpt[Array[Int]]
+//      val id = (j \ "id").asOpt[Int]
       (id) match {
         case (Some(i)) => {
           deviceService.removeDeviceType(i).map{ id => 

@@ -78,26 +78,26 @@
       $('#btn-remove').click(function() {
 
         var ids = [];
-
+        //配列に入れるときにintになおす。
         $('[name="recodes"]:checked').each(function(){
-          ids.push($(this).val());
+          ids.push(parseInt($(this).val()));
         });
 
 //        document.write(ids[1]);
 
         if(window.confirm('削除しますか？')){
 
-          var len = parseInt($("[name=recodes]:checked").length);
+//          var len = parseInt($("[name=recodes]:checked").length);
 
-          for(var i = 0; len > i; i++){ 
+//          for(var i = 0; len > i; i++){ 
 
           var deviceType = {};
 
 //          deviceType.id = parseInt($("[name=recodes]:checked").val());
-          deviceType.id = parseInt(ids[i]);
+//          deviceType.id = parseInt(ids[i]);
 
-
-//          deviceType.id = ids;
+          //idに配列をそのまま入れる（できるか不明）
+          deviceType.id = ids;
   
 //          deviceType.id = 22;
 //            deviceType.name = "test3";
@@ -115,7 +115,7 @@
             }
           }); 
 
-        }
+//        }
         }
       })
 	</script>
