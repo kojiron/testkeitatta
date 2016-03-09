@@ -23,9 +23,9 @@
 	    <tbody id="elements_body">
 	    @for(element <- deviceTypes) {
 	      <tr>
-                <td><input type="checkbox" name="recodes" value=@element.id id="removeId"></td>
-	        <td class="text-center">@element.id</td>
-	        <td>@element.name</td>
+                <th><input type="checkbox" name="records" value=@element.id></th>
+	        <td class="text-center one_row" data-toggle="modal" data-target="#updateForm">@element.id</td>
+	        <td class="one_row"data-toggle="modal" data-target="#updateForm">@element.name</td>
 	      </tr>
 	    }
 	    </tbody>
@@ -35,7 +35,7 @@
 	    </table>
             <p id="btns">
 <!--              <input type="submit" value="チェックしたデバイスを削除" />   -->
-              <button type="button" class="btn btn-primary" id="btn-remove">チェックしたデバイスを削除</button>
+              <button type="button" class="btn btn-primary" id="btn-remove">チたデバイスを削除</button>
             </p>
 	  </div>
 	</div>  
@@ -54,7 +54,55 @@
 	    </div>
 	  </div>
 	</div>
+	<div class="modal fade" id="updateForm" role="dialog" tabindex="-1">
+	  <div class="modal-dialog modal-dialog-center">
+  	    <div class="modal-content">
+  	      <div class="modal-header">登録内容更新</div>
+  	      <div class="modal-body">
+  	      ID:<input type="text" id="deviceTypeId_new">
+	      名前：<input type="text" id="deviceTypeName_new">
+	      </div>
+          <div class="modal-footer">
+      　　   <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+	        <button type="button" class="btn btn-primary" id="btn-update">更新</button>
+	   　　</div>
+	    </div>
+	  </div>
+	</div>
 	<script>
+
+      var num = 0;
+
+      $(".one_row").click(function(){
+          num = parseInt($(this).closest("tr").find("td").eq(0).text());
+
+      });
+
+      $("#btn-update").click(function(){
+
+          //alert(num);
+
+          var deviceType = {};
+          deviceType.name = $('#deviceTypeName_new').val();
+          deviceType.id = parseInt($('#deviceTypeId_new').val());
+          deviceType.id_old = num;
+
+          $.ajax({
+            type: 'POST' ,
+            url: '/devicetype/update' ,
+            contentType: 'application/JSON' , 
+            data: JSON.stringify(deviceType) ,
+            success: function(msg) {
+                location.reload();
+            } ,
+            error: function(xhr, textStatus, errorThrown){
+                alert('Error! ' + textStatus + ' ' + errorThrown);
+            }
+          });
+
+      });
+
+
       $('#btn-create').click(function() {
           var deviceType = {};
           deviceType.name = $('#deviceTypeName').val();
@@ -72,14 +120,14 @@
               alert("Error...");
             }
           }); 
-      })
+      });
 
 
       $('#btn-remove').click(function() {
 
         var ids = [];
         //配列に入れるときにintになおす。
-        $('[name="recodes"]:checked').each(function(){
+        $('[name="records"]:checked').each(function(){
           ids.push(parseInt($(this).val()));
         });
 
@@ -87,13 +135,13 @@
 
         if(window.confirm('削除しますか？')){
 
-//          var len = parseInt($("[name=recodes]:checked").length);
+//          var len = parseInt($("[name=records]:checked").length);
 
 //          for(var i = 0; len > i; i++){ 
 
           var deviceType = {};
 
-//          deviceType.id = parseInt($("[name=recodes]:checked").val());
+//          deviceType.id = parseInt($("[name=records]:checked").val());
 //          deviceType.id = parseInt(ids[i]);
 
           //idに配列をそのまま入れる（できるか不明）
@@ -117,6 +165,6 @@
 
 //        }
         }
-      })
+      });
 	</script>
 }

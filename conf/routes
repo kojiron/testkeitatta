@@ -10,6 +10,7 @@ GET		/							controllers.IndexController.index
 GET		/devicetype/list			controllers.DevicetypeController.list
 POST	/devicetype/create			controllers.DevicetypeController.create
 POST	/devicetype/remove			controllers.DevicetypeController.remove
+POST    /devicetype/update			controllers.DevicetypeController.update
 GET		/device/list				controllers.DeviceController.list
 GET		/owner/regist_index			controllers.OwnerController.regist
 POST	/owner/send_sms/:phone		controllers.OwnerController.sendSms(phone:String)

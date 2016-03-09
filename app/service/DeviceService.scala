@@ -20,6 +20,7 @@ trait DeviceService {
   def createDeviceType(id:Int , name:String):Future[Int]
   def createDevice(device:DeviceDto , deviceType:Int):Future[Int]
   def removeDeviceType(id:Array[Int]):Future[Int]
+  def updateDeviceType(id:Int ,id_old:Int , name:String):Future[Int]
 }
 
 
@@ -69,5 +70,9 @@ class DeviceServiceImpl @Inject() (val dbConfigProvider: DatabaseConfigProvider)
     dbConfig.db.run(action)
   }
 
+
+  def updateDeviceType(id:Int ,id_old:Int , name:String):Future[Int] = {
+    dbConfig.db.run(Devicetype.filter(p => p.id === id_old).map(p => (p.id , p.name)).update(id , name))
+  }
 
 }

@@ -58,4 +58,21 @@ class DevicetypeController @Inject()(val deviceService: DeviceService) extends C
     }.getOrElse(Future{BadRequest(Json.obj())})
   }
 
+
+  def update = Action.async { implicit request =>
+    request.body.asJson.map{ j =>
+      val deviceType = (j \ "name").asOpt[String]
+      val id = (j \ "id").asOpt[Int]
+      val id_old = (j \ "id_old").asOpt[Int]
+      (id , id_old , deviceType) match {
+        case (Some(i) , Some(o) , Some(d)) => {
+          deviceService.updateDeviceType(i ,o , d).map{ id => 
+            Ok(Json.obj())
+          }
+        }
+        case _ => Future(BadRequest(Json.obj()))
+      }
+    }.getOrElse(Future{BadRequest(Json.obj())})
+  }
+
 }
