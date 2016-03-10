@@ -23,7 +23,7 @@
 	    <tbody id="elements_body">
 	    @for(element <- deviceTypes) {
 	      <tr>
-                <th><input type="checkbox" name="records" value=@element.id></th>
+                <th><input type="checkbox" name="records[]" value=@element.id></th>
 	        <td class="text-center one_row" data-toggle="modal" data-target="#updateForm">@element.id</td>
 	        <td class="one_row"data-toggle="modal" data-target="#updateForm">@element.name</td>
 	      </tr>
@@ -35,7 +35,7 @@
 	    </table>
             <p id="btns">
 <!--              <input type="submit" value="チェックしたデバイスを削除" />   -->
-              <button type="button" class="btn btn-primary" id="btn-remove">チたデバイスを削除</button>
+              <button type="button" class="btn btn-primary" id="btn-remove">チェックしたデバイスを削除</button>
             </p>
 	  </div>
 	</div>  
@@ -127,9 +127,14 @@
 
         var ids = [];
         //配列に入れるときにintになおす。
-        $('[name="records"]:checked').each(function(){
+        $('[name="records[]"]:checked').each(function(){
           ids.push(parseInt($(this).val()));
         });
+        
+        if(ids.length == 0){
+          alert("削除するデバイスを選択してください");
+          return;
+        }
 
 //        document.write(ids[1]);
 

@@ -30,6 +30,7 @@ class DevicetypeController @Inject()(val deviceService: DeviceService) extends C
         case (Some(i) , Some(d)) => {
           deviceService.createDeviceType(i , d).map{ id => 
             Ok(Json.obj())
+
           }
         }
         case _ => Future(BadRequest(Json.obj()))
@@ -44,7 +45,7 @@ class DevicetypeController @Inject()(val deviceService: DeviceService) extends C
 //      val deviceType = ("test").asOpt[String]
 
       //javascript array no mama toridasitai
-      val id = (j \ "id").asOpt[Array[Int]]
+      val id = (j \ "id").asOpt[List[Int]]
 //      val id = (j \ "id").asOpt[Int]
       (id) match {
         case (Some(i)) => {

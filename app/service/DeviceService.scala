@@ -19,7 +19,7 @@ trait DeviceService {
   def listDeviceType():Future[Seq[DevicetypeRow]]
   def createDeviceType(id:Int , name:String):Future[Int]
   def createDevice(device:DeviceDto , deviceType:Int):Future[Int]
-  def removeDeviceType(id:Array[Int]):Future[Int]
+  def removeDeviceType(id:List[Int]):Future[Int]
   def updateDeviceType(id:Int ,id_old:Int , name:String):Future[Int]
 }
 
@@ -41,21 +41,21 @@ class DeviceServiceImpl @Inject() (val dbConfigProvider: DatabaseConfigProvider)
   }
 
 
-//  def removeDeviceType(id:Array[Int]):Array[Future[Int]] = {
+//  def removeDeviceType(id:List[Int]):List[Future[Int]] = {
 
-  def removeDeviceType(id:Array[Int]):Future[Int] = {
+  def removeDeviceType(id:List[Int]):Future[Int] = {
 
 //    for(ids <- id){
 //      dbConfig.db.run(Devicetype.filter(p => p.id === ids).delete)
 //    }
 //      id.foreach{ case ids => dbConfig.db.run(Devicetype.filter(p => p.id === ids).delete) }
 
-      id.map{ (ids:Int) => dbConfig.db.run(Devicetype.filter(p => p.id === ids).delete) }
+//      id.map{ (ids:Int) => dbConfig.db.run(Devicetype.filter(p => p.id === ids).delete) }
+      dbConfig.db.run(Devicetype.filter(p => p.id inSetBind id).delete)
 
 
 //      dbConfig.db.run(Devicetype.filter(p => p.id === id(1)).delete)   <==== OK!!
-      Future {1}
-
+//      Future {1}
 
   }
 
@@ -76,3 +76,5 @@ class DeviceServiceImpl @Inject() (val dbConfigProvider: DatabaseConfigProvider)
   }
 
 }
+
+
