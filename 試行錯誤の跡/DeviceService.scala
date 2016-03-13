@@ -23,6 +23,7 @@ trait DeviceService {
   def updateDeviceType(id:Int ,id_old:Int , name:String):Future[Int]
 }
 
+
 class DeviceServiceImpl @Inject() (val dbConfigProvider: DatabaseConfigProvider) extends DeviceService {
 
   val dbConfig = dbConfigProvider.get[JdbcProfile]
@@ -34,13 +35,33 @@ class DeviceServiceImpl @Inject() (val dbConfigProvider: DatabaseConfigProvider)
   }
   
 
+
   def createDeviceType(id:Int , name:String):Future[Int] = {
     dbConfig.db.run(Devicetype += DevicetypeRow(id , name))
   }
 
+
+//  def removeDeviceType(id:List[Int]):List[Future[Int]] = {
+
   def removeDeviceType(id:List[Int]):Future[Int] = {
+
+//    for(ids <- id){
+//      dbConfig.db.run(Devicetype.filter(p => p.id === ids).delete)
+//    }
+//      id.foreach{ case ids => dbConfig.db.run(Devicetype.filter(p => p.id === ids).delete) }
+
+//      id.map{ (ids:Int) => dbConfig.db.run(Devicetype.filter(p => p.id === ids).delete) }
       dbConfig.db.run(Devicetype.filter(p => p.id inSetBind id).delete)
+
+
+//      dbConfig.db.run(Devicetype.filter(p => p.id === id(1)).delete)   <==== OK!!
+//      Future {1}
+
   }
+
+//type mismatch;
+// found   : Array[scala.concurrent.Future[Int]]
+// required: scala.concurrent.Future[Array[Int]]
 
   def createDevice(device:DeviceDto , deviceType:Int):Future[Int] = {
     val query = 

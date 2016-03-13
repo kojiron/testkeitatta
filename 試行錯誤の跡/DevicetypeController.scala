@@ -40,17 +40,25 @@ class DevicetypeController @Inject()(val deviceService: DeviceService) extends C
 
   def remove = Action.async { implicit request =>
     request.body.asJson.map{ j =>
+//      val deviceType = (j \ "name").asOpt[String]
+//      val deviceType = (j \ "id").asOpt[String]
+//      val deviceType = ("test").asOpt[String]
+
+      //javascript array no mama toridasitai
       val id = (j \ "id").asOpt[List[Int]]
+//      val id = (j \ "id").asOpt[Int]
       (id) match {
         case (Some(i)) => {
           deviceService.removeDeviceType(i).map{ id =>
             Ok(Json.obj())
+ 
           }
         }
         case _ => Future(BadRequest(Json.obj()))
       }
     }.getOrElse(Future{BadRequest(Json.obj())})
   }
+
 
   def update = Action.async { implicit request =>
     request.body.asJson.map{ j =>

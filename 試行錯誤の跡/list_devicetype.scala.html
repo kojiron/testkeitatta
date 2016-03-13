@@ -34,6 +34,7 @@
 
 	    </table>
             <p id="btns">
+<!--              <input type="submit" value="チェックしたデバイスを削除" />   -->
               <button type="button" class="btn btn-primary" id="btn-remove">チェックしたデバイスを削除</button>
             </p>
 	  </div>
@@ -74,9 +75,12 @@
 
       $(".one_row").click(function(){
           num = parseInt($(this).closest("tr").find("td").eq(0).text());
+
       });
 
       $("#btn-update").click(function(){
+
+          //alert(num);
 
           var deviceType = {};
           deviceType.name = $('#deviceTypeName_new').val();
@@ -95,6 +99,7 @@
                 alert('Error! ' + textStatus + ' ' + errorThrown);
             }
           });
+
       });
 
 
@@ -117,6 +122,7 @@
           }); 
       });
 
+
       $('#btn-remove').click(function() {
 
         var ids = [];
@@ -130,10 +136,24 @@
           return;
         }
 
+//        document.write(ids[1]);
+
         if(window.confirm('削除しますか？')){
 
+//          var len = parseInt($("[name=records]:checked").length);
+
+//          for(var i = 0; len > i; i++){ 
+
           var deviceType = {};
+
+//          deviceType.id = parseInt($("[name=records]:checked").val());
+//          deviceType.id = parseInt(ids[i]);
+
+          //idに配列をそのまま入れる（できるか不明）
           deviceType.id = ids;
+  
+//          deviceType.id = 22;
+//            deviceType.name = "test3";
 
           $.ajax({
             type: 'POST' ,
@@ -147,6 +167,8 @@
                 alert('Error! ' + textStatus + ' ' + errorThrown);
             }
           }); 
+
+//        }
         }
       });
 	</script>
